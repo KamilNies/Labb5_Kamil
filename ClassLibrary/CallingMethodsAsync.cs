@@ -10,33 +10,31 @@ namespace ClassLibrary
 {
     public class CallingMethodsAsync
     {
-        public async Task<List<string>> DownloadAsync(string websiteURL)
+        public async Task<List<string>> DownloadAsync(string URL)
         {
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(websiteURL).ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            string sourceCode = await response.Content.ReadAsStringAsync();
-            List<string> srcURL = SeparateValues(sourceCode);
-            return srcURL;
+
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(URL).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                string resourceTask = await response.Content.ReadAsStringAsync();
+                List<string> resource = await SeparateValuesAsync(resourceTask);
+                return resource;
+            }
         }
 
-        public List<string> SeparateValues(string sourceCode)
+        public async Task<List<string>> SeparateValuesAsync(string resourceTask)
         {
             List<string> list = new List<string>();
-            Regex rx = new Regex(@"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-            MatchCollection matches = rx.Matches(sourceCode);
+            Regex rx = new Regex(@"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>",
+                RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            MatchCollection matches = await Task.Run(() => rx.Matches(resourceTask));
 
-            //foreach (Match match in matches)
-            //{
-            //    string src = match.Groups[1].Value;
-            //    list.Add(src);
-            //}
-
-            Parallel.ForEach<Match>(matches, (match) =>
+            foreach (Match match in matches)
             {
                 string src = match.Groups[1].Value;
                 list.Add(src);
-            });
+            }
 
             return list;
         }

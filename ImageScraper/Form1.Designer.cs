@@ -34,6 +34,7 @@ namespace ImageScraper
             this.extractButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.saveButton = new System.Windows.Forms.Button();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.SuspendLayout();
             // 
             // textBox1
@@ -110,6 +111,7 @@ namespace ImageScraper
         private System.Windows.Forms.Button extractButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }
 

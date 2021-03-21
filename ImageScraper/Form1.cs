@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,17 +14,14 @@ namespace ImageScraper
 {
     public partial class Form1 : Form
     {
-        //List<string> srcLinks = new List<string>();
-        //BindingSource bs = new BindingSource(); //Not sure we need it
-
         public Form1()
         {
             InitializeComponent();
-            //bs.DataSource = srcLinks;
         }
 
-        private void extractButton_Click(object sender, EventArgs e)
+        private async void extractButton_Click(object sender, EventArgs e)
         {
+            //Checks to ensure a valid input
             if (textBox1.Text == string.Empty || textBox1.Text == " ")
             {
                 MessageBox.Show("Textbox cannot be empty.", "Warning",
@@ -31,7 +29,7 @@ namespace ImageScraper
                 textBox1.Text = string.Empty;
                 return;
             }
-      
+
             if (!Uri.IsWellFormedUriString(textBox1.Text, UriKind.Absolute))
             {
                 MessageBox.Show("URL is not in correct format", "Warning",
@@ -41,50 +39,37 @@ namespace ImageScraper
             }
 
             listBox1.Items.Clear();
-
             CallingMethodsAsync callingHandler = new CallingMethodsAsync();
+            List<string> imagePaths = await callingHandler.DownloadAsync(textBox1.Text);
 
-            List<string> srcURLs = callingHandler.DownloadAsync(textBox1.Text).Result;
+            foreach (var imagePath in imagePaths)
+            {
+                listBox1.Items.Add(imagePath);
+            }
 
-            if (srcURLs.Count == 0)
+            if (imagePaths.Count == 0)
             {
                 MessageBox.Show("No images found", "Results",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            foreach (var srcURL in srcURLs)
-            {
-                listBox1.Items.Add(srcURL);
-            }
-
-            //srcLinks.Add(textBox1.Text);
-            //listBox1.DataSource = bs;
-            //bs.ResetBindings(false);
-
-            label1.Text = string.Format("Found {0} images.", srcURLs.Count);
+            label1.Text = string.Format("Found {0} images.", imagePaths.Count);
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedItems.Count > 0)
             {
-                DialogResult dialogResult = MessageBox.Show("Save selected items?", "Save",
-                   MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-
-                if (dialogResult == DialogResult.Yes)
-                {
-                    listBox1.Items.Add("Test Test.1"); //do something
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                    //do something else
-                }
-
-                return;
+                //When choosing your owns items
+                folderBrowserDialog1.ShowDialog();
+            }
+            else
+            {
+                //save all images
             }
 
-            listBox1.Items.Add("Test Test.");
+            folderBrowserDialog1.ShowDialog();
         }
 
         //Remove later maybe
