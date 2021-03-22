@@ -202,8 +202,8 @@ namespace ImageScraper
 
             if (counter != 0)
             {
-                MessageBox.Show(counter == 1 ? $"{counter} image could not be saved into the folder" :
-                    $"{counter} images could not be saved into the folder",
+                MessageBox.Show(counter == 1 ? $"{counter} image could not be saved" :
+                    $"{counter} images could not be saved",
                     "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
