@@ -10,12 +10,12 @@ namespace ClassLibrary
 {
     public class CallingMethodsAsync
     {
-        public async Task<List<string>> DownloadAsync(string URL)
+        public async Task<List<string>> DownloadAsync(string url)
         {
 
             using (var client = new HttpClient())
             {
-                var response = await client.GetAsync(URL).ConfigureAwait(false);
+                var response = await client.GetAsync(url).ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
                 string resourceTask = await response.Content.ReadAsStringAsync();
                 List<string> resource = await SeparateValuesAsync(resourceTask);
@@ -37,6 +37,17 @@ namespace ClassLibrary
             }
 
             return list;
+        }
+
+        public async Task<byte[]> DownloadImageAsync(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(url).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                byte[] resource = await response.Content.ReadAsByteArrayAsync();
+                return resource;
+            }
         }
     }
 }
