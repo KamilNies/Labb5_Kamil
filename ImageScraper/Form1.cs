@@ -50,6 +50,8 @@ namespace ImageScraper
             fileExtension = null;
             url = textBox1.Text;
 
+            label1.Text = "Extracting data.";
+
             //Async calling methods
             CallingMethodsAsync caller = new CallingMethodsAsync();
             try
@@ -96,16 +98,16 @@ namespace ImageScraper
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    folderBrowserDialog1.ShowDialog();
-                    string path = folderBrowserDialog1.SelectedPath;
-                    var selectedImages = lbMyListBox.Items.Cast<String>().ToList();
-
-                    if (path == string.Empty)
+                    try
                     {
-                        return;
+                        var selectedImages = listBox1.SelectedItems.Cast<string>().ToList();
+                        await SaveAllImages(selectedImages);
                     }
-
-                    FormatListItems(imageList);
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Warning", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
                 else if (dialogResult == DialogResult.No)
                 {
@@ -128,14 +130,6 @@ namespace ImageScraper
             {
                 try
                 {
-                    folderBrowserDialog1.ShowDialog();
-                    string path = folderBrowserDialog1.SelectedPath;
-
-                    if (path == string.Empty)
-                    {
-                        return;
-                    }
-
                     await SaveAllImages(imageList);
                 }
                 catch (Exception ex)
@@ -143,19 +137,6 @@ namespace ImageScraper
                     MessageBox.Show(ex.Message, "Warning", 
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-            }
-        }
-
-        //Remove later maybe
-        private void listBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.C)
-            {
-                System.Text.StringBuilder copy_buffer = new System.Text.StringBuilder();
-                foreach (object item in listBox1.SelectedItems)
-                    copy_buffer.AppendLine(item.ToString());
-                if (copy_buffer.Length > 0)
-                    Clipboard.SetText(copy_buffer.ToString());
             }
         }
 

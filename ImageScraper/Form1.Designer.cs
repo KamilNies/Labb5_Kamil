@@ -54,7 +54,6 @@ namespace ImageScraper
             this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.listBox1.Size = new System.Drawing.Size(776, 349);
             this.listBox1.TabIndex = 1;
-            this.listBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox1_KeyDown);
             // 
             // extractButton
             // 
