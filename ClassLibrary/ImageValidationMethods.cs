@@ -8,6 +8,8 @@ namespace ClassLibrary
 {
     public class ImageValidationMethods
     {
+        //https://www.filesignatures.net/ was used to find the signatures
+
         private readonly byte[] bmp = { 66, 77 };
         private readonly byte[] png = { 137, 80, 78, 71, 13, 10, 26, 10 };
         private readonly byte[] gif = { 71, 73, 70, 56 };

@@ -28,7 +28,7 @@ namespace ImageScraper
 
         private async void extractButton_Click(object sender, EventArgs e)
         {
-            //Checks that ensures a valid input
+            //Checks that ensures that a valid input was made
             if (textBox1.Text == string.Empty || textBox1.Text == " ")
             {
                 MessageBox.Show("Textbox cannot be empty.", "Warning",
@@ -202,8 +202,8 @@ namespace ImageScraper
 
             if (counter != 0)
             {
-                MessageBox.Show(counter == 1 ? $"{counter} image could not be saved into folder" :
-                    $"{counter} images could not be saved into folder",
+                MessageBox.Show(counter == 1 ? $"{counter} image could not be saved into the folder" :
+                    $"{counter} images could not be saved into the folder",
                     "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
