@@ -143,6 +143,7 @@ namespace ImageScraper
         private async Task SaveAllImages(List<string> imageList)
         {
             //Have user set folderBrowserDialog1.SelectedPath property
+            folderBrowserDialog1.SelectedPath = string.Empty;
             folderBrowserDialog1.ShowDialog();
             string path = folderBrowserDialog1.SelectedPath;
 
